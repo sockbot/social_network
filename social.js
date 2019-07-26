@@ -88,7 +88,8 @@ let getNameFromUid = function(uid) {
   return data[uid].name;
 }
 
-let getFollowedList = function(uid) {
+let getFollowingList = function(uid) {
+  // takes a uid and returns an array of followed 
   let followedList = [];
   for (name of data[uid].follows) {
     followedList.push(name);
@@ -96,23 +97,47 @@ let getFollowedList = function(uid) {
   return followedList;
 }
 
-/// fix this
-let getFollowerList = function(uid) {
-  let followerList = [];
-  // console.log(data['f01'].follows);
-  for (let person in data) {
-    for (let followed in data[person].follows) {
-      if (uid === followed) {
-        followerList.push(person);
-      }
+const isInArray = function(val, arr) {
+  for (let element of arr) {
+    if (element === val) {
+      return true;
     }
   }
+  return false;
 }
 
+let getFollowerList = function(uid) {
+  // takes a uid and returns an array of followers
+  let followerList = [];
+  // console.log(data['f01'].follows);
+  // 
+  for (let person in data) {
+    console.log('person', person);
+    // for (let index of data[person].follows) {
+    //   console.log('index', index, 'data[person].follows', data[person].follows);
+      
+    // }
+    if (isInArray(uid, data[person].follows)) {
+      followerList.push(person);
+    }
+  }
+  return followerList;
+}
+
+const getOneUser = function(uid) {
+  let results = {};
+  results.following = getFollowingList(uid);
+  results.followed = getFollowedList(uid);
+  return results;
+}
+
+const printUser = function(uid) {
+
+}
 console.log('Biggest follower is', biggestFollower());
 console.log('Followed count for f06 is', getNumFollowed('f06'));
 console.log('Most popular is', mostPopular());
 console.log('f01 follows f02', doesFollow('f01', 'f02'));
 console.log('f01 follows f05', doesFollow('f01', 'f05'));
-console.log('Followed list of f01:', getFollowedList('f01'))
+console.log('Followed list of f01:', getFollowingList('f01'))
 console.log('Follower list of f01:', getFollowerList('f01'))
